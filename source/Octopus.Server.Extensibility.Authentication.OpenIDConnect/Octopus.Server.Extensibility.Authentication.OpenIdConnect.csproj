@@ -113,18 +113,20 @@
     <Compile Include="..\Solution Items\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Certificates\KeyDetails.cs" />
+    <Compile Include="Certificates\RsaDetails.cs" />
     <Compile Include="OpenIDConnectAuthenticationProvider.cs" />
     <Compile Include="Issuer\AuthorizationEndpointUrlBuilder.cs" />
     <Compile Include="Certificates\CertificateDetails.cs" />
-    <Compile Include="Certificates\CertificateRetriever.cs" />
+    <Compile Include="Certificates\KeyRetriever.cs" />
     <Compile Include="Configuration\IOpenIDConnectConfigurationStore.cs" />
     <Compile Include="Configuration\OpenIDConnectConfiguration.cs" />
     <Compile Include="Configuration\OpenIDConnectConfigurationStore.cs" />
     <Compile Include="Configuration\OpenIDConnectConfigureCommands.cs" />
-    <Compile Include="Certificates\DefaultCertificateJsonParser.cs" />
+    <Compile Include="Certificates\DefaultKeyJsonParser.cs" />
     <Compile Include="Issuer\IAuthorizationEndpointUrlBuilder.cs" />
-    <Compile Include="Certificates\ICertificateJsonParser.cs" />
-    <Compile Include="Certificates\ICertificateRetriever.cs" />
+    <Compile Include="Certificates\IKeyJsonParser.cs" />
+    <Compile Include="Certificates\IKeyRetriever.cs" />
     <Compile Include="Issuer\IdentityProviderConfigDiscoverer.cs" />
     <Compile Include="Issuer\IIdentityProviderConfigDiscoverer.cs" />
     <Compile Include="Tokens\ClaimsPrincipleContainer.cs" />

@@ -1,0 +1,33 @@
+﻿
+.okta-button {
+    background-color: #000000;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.okta-button:hover {
+    background-color: #4a4a4a;
+}
+
+.okta-button img {
+    margin-left: 10px;
+    margin-top: 9px;
+    float: left;
+    padding: 2px;
+    width: 23px;
+    height: 22px;
+    background-color: #fafafa;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
+}
+
+.okta-button div {
+    font-weight: 600;
+    float: right;
+    text-align: left;
+    width: 200px;
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+}

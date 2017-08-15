@@ -7,9 +7,9 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
 {
-    public class AzureADAuthTokenHandler : OpenIDConnectAuthTokenHandler<IAzureADConfigurationStore, ICertificateRetriever>, IAzureADAuthTokenHandler
+    public class AzureADAuthTokenHandler : OpenIDConnectAuthTokenHandler<IAzureADConfigurationStore, IKeyRetriever>, IAzureADAuthTokenHandler
     {
-        public AzureADAuthTokenHandler(ILog log, IAzureADConfigurationStore configurationStore, IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, ICertificateRetriever certificateRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, certificateRetriever)
+        public AzureADAuthTokenHandler(ILog log, IAzureADConfigurationStore configurationStore, IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, IKeyRetriever keyRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, keyRetriever)
         {
         }
 

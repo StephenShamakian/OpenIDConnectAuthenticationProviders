@@ -2,7 +2,7 @@
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer
 {
-    public interface IGoogleCertificateRetriever : ICertificateRetriever
+    public interface IGoogleKeyRetriever : IKeyRetriever
     {
         
     }

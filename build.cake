@@ -116,7 +116,8 @@ Task("__Pack")
 		
 		CopyFileToDirectory(solutionDir + "Octopus.Server.Extensibility.Authentication.AzureAD/bin/Octopus.Server.Extensibility.Authentication.AzureAD.dll", nugetPackDir);
 		CopyFileToDirectory(solutionDir + "Octopus.Server.Extensibility.Authentication.GoogleApps/bin/Octopus.Server.Extensibility.Authentication.GoogleApps.dll", nugetPackDir);
-
+		CopyFileToDirectory(solutionDir + "Octopus.Server.Extensibility.Authentication.Okta/bin/Octopus.Server.Extensibility.Authentication.Okta.dll", nugetPackDir);
+		
         NuGetPack(Path.Combine(nugetPackDir, nuspecFile), new NuGetPackSettings {
             Version = nugetVersion,
             OutputDirectory = artifactsDir

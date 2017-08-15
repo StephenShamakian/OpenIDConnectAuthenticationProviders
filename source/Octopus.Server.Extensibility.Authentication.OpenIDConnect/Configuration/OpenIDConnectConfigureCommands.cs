@@ -12,9 +12,12 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
     {
         protected readonly ILog Log;
         protected readonly Lazy<TStore> ConfigurationStore;
-        readonly IWebPortalConfigurationStore webPortalConfigurationStore;
+        readonly Lazy<IWebPortalConfigurationStore> webPortalConfigurationStore;
 
-        protected OpenIdConnectConfigureCommands(ILog log, Lazy<TStore> configurationStore, IWebPortalConfigurationStore webPortalConfigurationStore)
+        protected OpenIdConnectConfigureCommands(
+            ILog log,
+            Lazy<TStore> configurationStore,
+            Lazy<IWebPortalConfigurationStore> webPortalConfigurationStore)
         {
             Log = log;
             ConfigurationStore = configurationStore;
@@ -31,9 +34,9 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
                 ConfigurationStore.Value.SetIsEnabled(isEnabled);
                 Log.Info($"{ConfigurationSettingsName} IsEnabled set to: {isEnabled}");
 
-                var listenPrefixes = webPortalConfigurationStore.GetListenPrefixes();
+                var listenPrefixes = webPortalConfigurationStore.Value.GetListenPrefixes();
 
-                if (isEnabled && webPortalConfigurationStore.GetForceSSL() == false && listenPrefixes.ToLower().Contains("http://"))
+                if (isEnabled && webPortalConfigurationStore.Value.GetForceSSL() == false && listenPrefixes.ToLower().Contains("http://"))
                     Log.Warn($"{ConfigurationSettingsName} user authentication API was called from an instance including listening prefixes that are not using https.");
 
                 if (isEnabled && !string.IsNullOrWhiteSpace(listenPrefixes))

@@ -9,7 +9,11 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 {
     public class AzureADConfigureCommands : OpenIdConnectConfigureCommands<IAzureADConfigurationStore>
     {
-        public AzureADConfigureCommands(ILog log, Lazy<IAzureADConfigurationStore> configurationStore, IWebPortalConfigurationStore webPortalConfigurationStore) : base(log, configurationStore, webPortalConfigurationStore)
+        public AzureADConfigureCommands(
+            ILog log,
+            Lazy<IAzureADConfigurationStore> configurationStore,
+            Lazy<IWebPortalConfigurationStore> webPortalConfigurationStore)
+            : base(log, configurationStore, webPortalConfigurationStore)
         {
         }
 

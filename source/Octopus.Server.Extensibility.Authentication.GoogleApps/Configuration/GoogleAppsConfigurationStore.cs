@@ -14,17 +14,6 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
         {
         }
 
-        public string GetCertificateUri()
-        {
-            var doc = ConfigurationStore.Get<GoogleAppsConfiguration>(SingletonId);
-            return doc?.CertificateUri;
-        }
-
-        public void SetCertificateUri(string certificateUri)
-        {
-            ConfigurationStore.CreateOrUpdate<GoogleAppsConfiguration>(SingletonId, doc => doc.CertificateUri = certificateUri);
-        }
-
         public string GetHostedDomain()
         {
             var doc = ConfigurationStore.Get<GoogleAppsConfiguration>(SingletonId);
@@ -44,7 +33,6 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
                 yield return configurationValue;
             }
 
-            yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.CertificateUri", GetCertificateUri(), GetIsEnabled() && GetCertificateUri() != GoogleAppsConfiguration.DefaultCertificateUri, "Certificate Uri");
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.HostedDomain", GetHostedDomain(), GetIsEnabled(), "Hosted Domain");
         }
     }

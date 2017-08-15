@@ -1,7 +1,7 @@
 ﻿namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates
 {
-    public interface ICertificateJsonParser
+    public interface IKeyJsonParser
     {
-        CertificateDetails[] Parse(string content);
+        KeyDetails[] Parse(string content);
     }
 }

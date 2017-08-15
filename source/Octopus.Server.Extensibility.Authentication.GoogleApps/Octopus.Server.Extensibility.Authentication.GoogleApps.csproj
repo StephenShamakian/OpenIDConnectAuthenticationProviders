@@ -119,14 +119,14 @@
     <Compile Include="GoogleAppsApi.cs" />
     <Compile Include="Issuer\GoogleAppsAuthorizationEndpointUrlBuilder.cs" />
     <Compile Include="GoogleAppsExtension.cs" />
-    <Compile Include="Issuer\GoogleCertificateRetriever.cs" />
-    <Compile Include="Issuer\IGoogleCertificateRetriever.cs" />
+    <Compile Include="Issuer\GoogleKeyRetriever.cs" />
+    <Compile Include="Issuer\IGoogleKeyRetriever.cs" />
     <Compile Include="Tokens\GoogleAuthTokenHandler.cs" />
-    <Compile Include="Tokens\GoogleCertificateJsonParser.cs" />
     <Compile Include="Issuer\IGoogleAppsAuthorizationEndpointUrlBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tokens\IGoogleAuthTokenHandler.cs" />
     <Compile Include="Tokens\IGoogleCertificateJsonParser.cs" />
+    <Compile Include="Web\GoogleAppsCSSContributor.cs" />
     <Compile Include="Web\GoogleAppsHomeLinksContributor.cs" />
     <Compile Include="Web\GoogleAppsStaticContentFolders.cs" />
     <Compile Include="Web\GoogleAppsUserAuthenticatedAction.cs" />

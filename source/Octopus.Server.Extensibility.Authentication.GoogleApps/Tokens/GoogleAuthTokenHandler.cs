@@ -8,9 +8,9 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Tokens
 {
-    public class GoogleAuthTokenHandler : OpenIDConnectAuthTokenHandler<IGoogleAppsConfigurationStore, IGoogleCertificateRetriever>, IGoogleAuthTokenHandler
+    public class GoogleAuthTokenHandler : OpenIDConnectAuthTokenHandler<IGoogleAppsConfigurationStore, IGoogleKeyRetriever>, IGoogleAuthTokenHandler
     {
-        public GoogleAuthTokenHandler(ILog log, IGoogleAppsConfigurationStore configurationStore, IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, IGoogleCertificateRetriever certificateRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, certificateRetriever)
+        public GoogleAuthTokenHandler(ILog log, IGoogleAppsConfigurationStore configurationStore, IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, IGoogleKeyRetriever keyRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, keyRetriever)
         {
         }
 

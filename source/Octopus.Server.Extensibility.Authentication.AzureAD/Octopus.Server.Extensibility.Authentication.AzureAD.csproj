@@ -121,9 +121,9 @@
     <Compile Include="Infrastructure\IAzureADPrincipalToUserResourceMapper.cs" />
     <Compile Include="Web\AzureADStaticContentFolders.cs" />
     <Compile Include="Issuer\AzureADAuthorizationEndpointUrlBuilder.cs" />
-    <Compile Include="Issuer\AzureADCertificateRetriever.cs" />
+    <Compile Include="Issuer\AzureADKeyRetriever.cs" />
     <Compile Include="Issuer\IAzureADAuthorizationEndpointUrlBuilder.cs" />
-    <Compile Include="Issuer\IAzureADCertificateRetriever.cs" />
+    <Compile Include="Issuer\IAzureADKeyRetriever.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tokens\AzureADAuthTokenHandler.cs" />
     <Compile Include="Tokens\IAzureADAuthTokenHandler.cs" />

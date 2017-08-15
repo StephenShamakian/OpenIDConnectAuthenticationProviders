@@ -2,7 +2,7 @@
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Issuer
 {
-    public interface IAzureADCertificateRetriever : ICertificateRetriever
+    public interface IAzureADKeyRetriever : IKeyRetriever
     {
         
     }
