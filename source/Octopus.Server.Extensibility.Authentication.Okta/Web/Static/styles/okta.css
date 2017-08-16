@@ -1,5 +1,4 @@
-﻿
-.okta-button {
+﻿.okta-button {
     background-color: #000000;
     color: #ffffff;
     cursor: pointer;
@@ -24,10 +23,11 @@
 
 .okta-button div {
     font-weight: 600;
-    float: right;
+    display: inline-block;
     text-align: left;
-    width: 200px;
+    width: 140px;
     height: 40px;
     line-height: 40px;
     overflow: hidden;
 }
+

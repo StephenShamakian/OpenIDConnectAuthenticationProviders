@@ -120,7 +120,6 @@
     <Compile Include="Configuration\OktaConfigurationStore.cs" />
     <Compile Include="Infrastructure\OktaPrincipalToUserResourceMapper.cs" />
     <Compile Include="Infrastructure\IOktaPrincipalToUserResourceMapper.cs" />
-    <Compile Include="Web\OktaCSSContributor.cs" />
     <Compile Include="Web\OktaStaticContentFolders.cs" />
     <Compile Include="Issuer\OktaAuthorizationEndpointUrlBuilder.cs" />
     <Compile Include="Issuer\OktaKeyRetriever.cs" />
@@ -133,7 +132,6 @@
     <Compile Include="Web\OktaUserAuthenticatedAction.cs" />
     <Compile Include="Web\OktaUserAuthenticationAction.cs" />
     <Compile Include="OktaAuthenticationProvider.cs" />
-    <Compile Include="Web\OktaJavascriptContributor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Octopus.Server.Extensibility.Authentication.OpenIDConnect\Octopus.Server.Extensibility.Authentication.OpenIdConnect.csproj">
@@ -149,19 +147,13 @@
     <EmbeddedResource Include="Web\Static\styles\okta.css" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Web\Static\areas\users\controllers\okta_auth_provider_controller.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Web\Static\areas\users\directives\okta_auth_provider.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Web\Static\areas\users\okta_users_module.js" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Web\Static\images\okta\logo_blue_medium.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Web\Static\images\okta\aura_solid_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\Static\areas\users\okta_auth_provider.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

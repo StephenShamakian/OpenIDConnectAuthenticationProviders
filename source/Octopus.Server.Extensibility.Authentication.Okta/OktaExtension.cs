@@ -47,15 +47,11 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
             builder.RegisterType<OktaUserAuthenticationAction>().AsSelf().InstancePerDependency();
             builder.RegisterType<OktaUserAuthenticatedAction>().AsSelf().InstancePerDependency();
 
-            builder.RegisterType<OktaCSSContributor>().As<IContributesCSS>().InstancePerDependency();
-            builder.RegisterType<OktaJavascriptContributor>()
-                .As<IContributesJavascript>()
-                .As<IContributesAngularModules>()
-                .InstancePerDependency();
-
             builder.RegisterType<OktaAuthenticationProvider>()
                 .As<IAuthenticationProvider>()
                 .As<IAuthenticationProviderWithGroupSupport>()
+                .As<IContributesCSS>()
+                .As<IContributesJavascript>()
                 .AsSelf()
                 .InstancePerDependency();
         }

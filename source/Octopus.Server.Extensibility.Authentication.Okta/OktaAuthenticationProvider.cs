@@ -14,6 +14,8 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
 
         public override string IdentityProviderName => "Okta";
 
+        public override string FilenamePrefix => "okta";
+
         protected override IEnumerable<string> ReasonsWhyConfigIsIncomplete()
         {
             var issuer = ConfigurationStore.GetIssuer();
@@ -25,9 +27,5 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
                 yield return $"No {IdentityProviderName} Client ID specified";
         }
 
-        protected override string LoginLinkHtml()
-        {
-            return "<okta-auth-provider provider='provider' should-auto-login='shouldAutoLogin' is-submitting='isSubmitting' handle-sign-in-error='handleSignInError'></okta-auth-provider>";
-        }
     }
 }
