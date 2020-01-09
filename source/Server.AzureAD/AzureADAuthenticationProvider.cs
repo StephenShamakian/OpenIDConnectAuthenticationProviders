@@ -10,7 +10,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
     public class AzureADAuthenticationProvider : OpenIDConnectAuthenticationProvider<IAzureADConfigurationStore>
     {
         public const string ProviderName = "Azure AD";
-        public AzureADAuthenticationProvider(ILog log, IAzureADConfigurationStore configurationStore) : base(log, configurationStore)
+        public AzureADAuthenticationProvider(ISystemLog log, IAzureADConfigurationStore configurationStore) : base(log, configurationStore)
         {
         }
 

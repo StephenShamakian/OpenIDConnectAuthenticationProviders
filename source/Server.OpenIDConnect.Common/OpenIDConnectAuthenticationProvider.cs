@@ -16,9 +16,9 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common
         IContributesJavascript
         where TStore : IOpenIDConnectConfigurationStore
     {
-        readonly ILog log;
+        readonly ISystemLog log;
 
-        protected OpenIDConnectAuthenticationProvider(ILog log, TStore configurationStore)
+        protected OpenIDConnectAuthenticationProvider(ISystemLog log, TStore configurationStore)
         {
             this.log = log;
             ConfigurationStore = configurationStore;

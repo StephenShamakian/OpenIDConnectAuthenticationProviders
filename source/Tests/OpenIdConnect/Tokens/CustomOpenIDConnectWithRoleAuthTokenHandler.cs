@@ -8,7 +8,7 @@ namespace Tests.OpenIdConnect.Tokens
 {
     public class CustomOpenIDConnectWithRoleAuthTokenHandler : OpenIDConnectAuthTokenWithRolesHandler<IOpenIDConnectConfigurationWithRoleStore, IKeyRetriever, IIdentityProviderConfigDiscoverer>
     { 
-        public CustomOpenIDConnectWithRoleAuthTokenHandler(ILog log, IOpenIDConnectConfigurationWithRoleStore configurationStore, IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, IKeyRetriever keyRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, keyRetriever)
+        public CustomOpenIDConnectWithRoleAuthTokenHandler(ISystemLog log, IOpenIDConnectConfigurationWithRoleStore configurationStore, IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, IKeyRetriever keyRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, keyRetriever)
         {
             
         }

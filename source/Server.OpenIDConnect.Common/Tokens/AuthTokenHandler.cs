@@ -22,13 +22,13 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
         
         readonly TDiscoverer identityProviderConfigDiscoverer;
         readonly TRetriever keyRetriever;
-        protected readonly ILog Log;
+        protected readonly ISystemLog Log;
         protected readonly TStore ConfigurationStore;
 
         protected AuthTokenHandler(TStore configurationStore,
             TDiscoverer identityProviderConfigDiscoverer,
             TRetriever keyRetriever,
-            ILog log)
+            ISystemLog log)
         {
             ConfigurationStore = configurationStore;
             this.identityProviderConfigDiscoverer = identityProviderConfigDiscoverer;

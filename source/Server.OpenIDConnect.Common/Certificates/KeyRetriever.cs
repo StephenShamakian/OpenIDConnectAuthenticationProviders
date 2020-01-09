@@ -18,7 +18,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certi
         where TKeyParser : IKeyJsonParser
     {
         readonly TKeyParser keyParser;
-        readonly ILog log;
+        readonly ISystemLog log;
         readonly object funcLock = new object();
         Task<IDictionary<string, AsymmetricSecurityKey>> certRetrieveTask;
 
@@ -26,7 +26,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certi
 
         protected KeyRetriever(TStore configurationStore,
             TKeyParser keyParser, 
-            ILog log)
+            ISystemLog log)
         {
             ConfigurationStore = configurationStore;
             this.keyParser = keyParser;

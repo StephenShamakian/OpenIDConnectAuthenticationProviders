@@ -10,7 +10,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
     public class AzureADConfigureCommands : OpenIdConnectConfigureCommands<IAzureADConfigurationStore>
     {
         public AzureADConfigureCommands(
-            ILog log,
+            ISystemLog log,
             Lazy<IAzureADConfigurationStore> configurationStore,
             Lazy<IWebPortalConfigurationStore> webPortalConfigurationStore)
             : base(log, configurationStore, webPortalConfigurationStore)

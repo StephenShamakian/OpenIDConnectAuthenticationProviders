@@ -13,7 +13,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
         where TRetriever : IKeyRetriever
         where TDiscoverer : IIdentityProviderConfigDiscoverer
     {
-        protected OpenIDConnectAuthTokenWithRolesHandler(ILog log, TStore configurationStore, TDiscoverer identityProviderConfigDiscoverer, TRetriever keyRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, keyRetriever)
+        protected OpenIDConnectAuthTokenWithRolesHandler(ISystemLog log, TStore configurationStore, TDiscoverer identityProviderConfigDiscoverer, TRetriever keyRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, keyRetriever)
         {
         }
 

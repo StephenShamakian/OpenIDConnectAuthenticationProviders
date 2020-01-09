@@ -9,7 +9,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID
     {
         public const string ProviderName = "Octopus ID";
 
-        public OctopusIDAuthenticationProvider(ILog log, IOctopusIDConfigurationStore configurationStore) : base(log, configurationStore)
+        public OctopusIDAuthenticationProvider(ISystemLog log, IOctopusIDConfigurationStore configurationStore) : base(log, configurationStore)
         {
         }
 

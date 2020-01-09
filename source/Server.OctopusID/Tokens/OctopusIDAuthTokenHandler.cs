@@ -7,7 +7,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Tokens
 {
     public class OctopusIDAuthTokenHandler : OpenIDConnectAuthTokenWithRolesHandler<IOctopusIDConfigurationStore, IOctopusIDKeyRetriever, IOctopusIdentityProviderConfigDiscoverer>, IOctopusIDAuthTokenHandler
     {
-        public OctopusIDAuthTokenHandler(ILog log, IOctopusIDConfigurationStore configurationStore, IOctopusIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, IOctopusIDKeyRetriever keyRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, keyRetriever)
+        public OctopusIDAuthTokenHandler(ISystemLog log, IOctopusIDConfigurationStore configurationStore, IOctopusIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, IOctopusIDKeyRetriever keyRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, keyRetriever)
         {
         }
     }

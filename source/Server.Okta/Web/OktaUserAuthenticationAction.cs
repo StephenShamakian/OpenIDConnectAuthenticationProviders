@@ -11,7 +11,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
     public class OktaUserAuthenticationAction : UserAuthenticationAction<IOktaConfigurationStore>
     {
         public OktaUserAuthenticationAction(
-            ILog log,
+            ISystemLog log,
             IOktaConfigurationStore configurationStore, 
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, 
             IOktaAuthorizationEndpointUrlBuilder urlBuilder,

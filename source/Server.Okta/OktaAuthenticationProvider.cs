@@ -11,7 +11,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
     {
         public const string ProviderName = "Okta";
 
-        public OktaAuthenticationProvider(ILog log, IOktaConfigurationStore configurationStore) : base(log, configurationStore)
+        public OktaAuthenticationProvider(ISystemLog log, IOktaConfigurationStore configurationStore) : base(log, configurationStore)
         {
         }
 

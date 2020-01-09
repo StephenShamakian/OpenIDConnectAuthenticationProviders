@@ -11,7 +11,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
     public class GoogleAppsUserAuthenticationAction : UserAuthenticationAction<IGoogleAppsConfigurationStore>
     {
         public GoogleAppsUserAuthenticationAction(
-            ILog log,
+            ISystemLog log,
             IGoogleAppsConfigurationStore configurationStore, 
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, 
             IGoogleAppsAuthorizationEndpointUrlBuilder urlBuilder,

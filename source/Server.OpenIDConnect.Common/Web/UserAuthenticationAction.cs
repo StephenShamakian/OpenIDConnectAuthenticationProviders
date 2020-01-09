@@ -14,7 +14,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
     public abstract class UserAuthenticationAction<TStore> : IAsyncApiAction
         where TStore : IOpenIDConnectConfigurationStore
     {
-        readonly ILog log;
+        readonly ISystemLog log;
         readonly IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer;
         readonly IAuthorizationEndpointUrlBuilder urlBuilder;
 
@@ -23,7 +23,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
         readonly IAuthenticationConfigurationStore authenticationConfigurationStore;
 
         protected UserAuthenticationAction(
-            ILog log,
+            ISystemLog log,
             TStore configurationStore,
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, 
             IAuthorizationEndpointUrlBuilder urlBuilder,

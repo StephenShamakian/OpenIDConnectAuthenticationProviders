@@ -13,7 +13,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Web
     public class OctopusIDUserAuthenticatedAction : UserAuthenticatedAction<IOctopusIDConfigurationStore, IOctopusIDAuthTokenHandler, IOctopusIDIdentityCreator>
     {
         public OctopusIDUserAuthenticatedAction(
-            ILog log,
+            ISystemLog log,
             IOctopusIDAuthTokenHandler authTokenHandler,
             IOctopusIDPrincipalToUserResourceMapper principalToUserResourceMapper,
             IUpdateableUserStore userStore,

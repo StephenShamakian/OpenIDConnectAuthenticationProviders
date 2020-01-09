@@ -13,7 +13,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
     public class AzureADUserAuthenticatedAction : UserAuthenticatedAction<IAzureADConfigurationStore, IAzureADAuthTokenHandler, IAzureADIdentityCreator>
     {
         public AzureADUserAuthenticatedAction(
-            ILog log,
+            ISystemLog log,
             IAzureADAuthTokenHandler authTokenHandler,
             IAzureADPrincipalToUserResourceMapper principalToUserResourceMapper,
             IUpdateableUserStore userStore,

@@ -11,7 +11,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
     {
         public const string ProviderName = "Google Apps";
 
-        public GoogleAppsAuthenticationProvider(ILog log, IGoogleAppsConfigurationStore configurationStore) : base(log, configurationStore)
+        public GoogleAppsAuthenticationProvider(ISystemLog log, IGoogleAppsConfigurationStore configurationStore) : base(log, configurationStore)
         {
         }
 

@@ -14,7 +14,7 @@ namespace Tests.OpenIdConnect.Tokens
     [TestFixture]
     public class OpenIDConnectWithRolesAuthTokenHandlerFixture : OpenIDFixtureBase
     {
-        ILog log;
+        ISystemLog log;
         IOpenIDConnectConfigurationWithRoleStore configurationStore;
         IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer;
         IKeyRetriever keyRetriever;
@@ -23,7 +23,7 @@ namespace Tests.OpenIdConnect.Tokens
         [SetUp]
         public void SetUp()
         {
-            log = Substitute.For<ILog>();
+            log = Substitute.For<ISystemLog>();
             configurationStore = Substitute.For<IOpenIDConnectConfigurationWithRoleStore>();
             identityProviderConfigDiscoverer = Substitute.For<IIdentityProviderConfigDiscoverer>();
             keyRetriever = Substitute.For<IKeyRetriever>();

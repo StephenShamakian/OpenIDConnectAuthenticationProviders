@@ -26,7 +26,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
         where TAuthTokenHandler : IAuthTokenHandler
         where TIdentityCreator : IIdentityCreator
     {
-        readonly ILog log;
+        readonly ISystemLog log;
         readonly TAuthTokenHandler authTokenHandler;
         readonly IPrincipalToUserResourceMapper principalToUserResourceMapper;
         readonly IUpdateableUserStore userStore;
@@ -40,7 +40,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
         protected readonly TStore ConfigurationStore;
 
         protected UserAuthenticatedAction(
-            ILog log, 
+            ISystemLog log, 
             TAuthTokenHandler authTokenHandler, 
             IPrincipalToUserResourceMapper principalToUserResourceMapper, 
             IUpdateableUserStore userStore, 

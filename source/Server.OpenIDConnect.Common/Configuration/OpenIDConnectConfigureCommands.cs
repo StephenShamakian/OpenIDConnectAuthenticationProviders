@@ -10,12 +10,12 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Confi
     public abstract class OpenIdConnectConfigureCommands<TStore> : IContributeToConfigureCommand
         where TStore : IOpenIDConnectConfigurationStore
     {
-        protected readonly ILog Log;
+        protected readonly ISystemLog Log;
         protected readonly Lazy<TStore> ConfigurationStore;
         readonly Lazy<IWebPortalConfigurationStore> webPortalConfigurationStore;
 
         protected OpenIdConnectConfigureCommands(
-            ILog log,
+            ISystemLog log,
             Lazy<TStore> configurationStore,
             Lazy<IWebPortalConfigurationStore> webPortalConfigurationStore)
         {
