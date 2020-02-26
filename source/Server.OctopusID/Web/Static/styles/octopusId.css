@@ -7,10 +7,12 @@
     align-items: center;
     padding-top: 0.8125rem;
     padding-bottom: 0.8125rem;
+    background-color: #54B954;
+    color: #fff;
 }
 
 .octopusID-button:hover {
-    background-color: #2F93E0;
+    background-color: #449744;
     color: #fff;
 }
 
@@ -24,7 +26,7 @@
 }
 
 .octopusID-button div {
-    font-weight: 600;
+    font-weight: 500;
     display: inline-block;
     text-align: left;
     margin-left: 0.8125rem;
