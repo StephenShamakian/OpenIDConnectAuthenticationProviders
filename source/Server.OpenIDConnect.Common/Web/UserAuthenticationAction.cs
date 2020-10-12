@@ -18,7 +18,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
         static readonly BadRequestRegistration PotentialOpenDirect = new BadRequestRegistration("Request not allowed, due to potential Open Redirection attack");
         static readonly BadRequestRegistration LoginFailed = new BadRequestRegistration("Login failed. Please see the Octopus Server logs for more details.");
         static readonly OctopusJsonRegistration<LoginRedirectLinkResponseModel> Result = new OctopusJsonRegistration<LoginRedirectLinkResponseModel>();
-        
+
         readonly ILog log;
         readonly IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer;
         readonly IAuthorizationEndpointUrlBuilder urlBuilder;
@@ -80,8 +80,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
 
                 // These cookies are used to validate the data returned from the external identity provider - this prevents tampering
                 return Result.Response(new LoginRedirectLinkResponseModel {ExternalAuthenticationUrl = url})
-                    .WithCookie(new OctoCookie(UserAuthConstants.OctopusStateCookieName, State.Protect(stateString)) { HttpOnly = true, Secure = state.UsingSecureConnection, Expires = DateTimeOffset.UtcNow.AddMinutes(20) })
-                    .WithCookie(new OctoCookie(UserAuthConstants.OctopusNonceCookieName, Nonce.Protect(nonce)) { HttpOnly = true, Secure = state.UsingSecureConnection, Expires = DateTimeOffset.UtcNow.AddMinutes(20) });
+                    .WithCookie(new OctoCookie(UserAuthConstants.OctopusStateCookieName, State.Protect(stateString)) { HttpOnly = true, Secure = state.UsingSecureConnection, Expires = DateTimeOffset.UtcNow.AddMinutes(20), SameSite = SameSiteMode.None })
+                    .WithCookie(new OctoCookie(UserAuthConstants.OctopusNonceCookieName, Nonce.Protect(nonce)) { HttpOnly = true, Secure = state.UsingSecureConnection, Expires = DateTimeOffset.UtcNow.AddMinutes(20), SameSite = SameSiteMode.None });
             }
             catch (ArgumentException ex)
             {
