@@ -23,7 +23,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
         readonly IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer;
         readonly IAuthorizationEndpointUrlBuilder urlBuilder;
 
-        protected readonly TStore ConfigurationStore;
         readonly IApiActionModelBinder modelBinder;
         readonly IAuthenticationConfigurationStore authenticationConfigurationStore;
 
@@ -42,6 +41,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
             this.identityProviderConfigDiscoverer = identityProviderConfigDiscoverer;
             this.urlBuilder = urlBuilder;
         }
+
+        protected TStore ConfigurationStore { get; }
 
         public async Task<IOctoResponseProvider> ExecuteAsync(IOctoRequest request)
         {
@@ -72,16 +73,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
                 var issuer = ConfigurationStore.GetIssuer() ?? string.Empty;
                 var issuerConfig = await identityProviderConfigDiscoverer.GetConfigurationAsync(issuer);
 
-                // Use a non-deterministic nonce to prevent replay attacks
-                var nonce = Nonce.GenerateUrlSafeNonce();
+                var response = ConfigurationStore.HasClientSecret
+                    ? BuildAuthorizationCodeResponse(model, state, issuerConfig)
+                    : BuildHybridResponse(model, state, issuerConfig);
 
-                var stateString = JsonConvert.SerializeObject(state);
-                var url = urlBuilder.Build(model.ApiAbsUrl, issuerConfig, nonce, stateString);
-
-                // These cookies are used to validate the data returned from the external identity provider - this prevents tampering
-                return Result.Response(new LoginRedirectLinkResponseModel {ExternalAuthenticationUrl = url})
-                    .WithCookie(new OctoCookie(UserAuthConstants.OctopusStateCookieName, State.Protect(stateString)) { HttpOnly = true, Secure = state.UsingSecureConnection, Expires = DateTimeOffset.UtcNow.AddMinutes(20) })
-                    .WithCookie(new OctoCookie(UserAuthConstants.OctopusNonceCookieName, Nonce.Protect(nonce)) { HttpOnly = true, Secure = state.UsingSecureConnection, Expires = DateTimeOffset.UtcNow.AddMinutes(20) });
+                return response;
             }
             catch (ArgumentException ex)
             {
@@ -93,6 +89,26 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
                 log.Error(ex);
                 return LoginFailed.Response();
             }
+        }
+
+        IOctoResponseProvider BuildAuthorizationCodeResponse(LoginRedirectLinkRequestModel model, LoginState state, IssuerConfiguration issuerConfig)
+        {
+            var stateString = JsonConvert.SerializeObject(state);
+            var url = urlBuilder.Build(model.ApiAbsUrl, issuerConfig, state: stateString);
+            var response = Result.Response(new LoginRedirectLinkResponseModel {ExternalAuthenticationUrl = url});
+            return response;
+        }
+
+        IOctoResponseProvider BuildHybridResponse(LoginRedirectLinkRequestModel model, LoginState state, IssuerConfiguration issuerConfig)
+        {
+            var nonce = Nonce.GenerateUrlSafeNonce();
+            var stateString = JsonConvert.SerializeObject(state);
+            var url = urlBuilder.Build(model.ApiAbsUrl, issuerConfig, nonce, stateString);
+            // These cookies are used to validate the data returned from the external identity provider - this prevents tampering
+            var response = Result.Response(new LoginRedirectLinkResponseModel {ExternalAuthenticationUrl = url})
+                .WithCookie(new OctoCookie(UserAuthConstants.OctopusStateCookieName, State.Protect(stateString)) {HttpOnly = true, Secure = state.UsingSecureConnection, Expires = DateTimeOffset.UtcNow.AddMinutes(20)})
+                .WithCookie(new OctoCookie(UserAuthConstants.OctopusNonceCookieName, Nonce.Protect(nonce)) {HttpOnly = true, Secure = state.UsingSecureConnection, Expires = DateTimeOffset.UtcNow.AddMinutes(20)});
+            return response;
         }
     }
 }

@@ -5,7 +5,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Confi
 {
     public abstract class OpenIDConnectConfiguration : ExtensionConfigurationDocument, IOpenIDConnectConfiguration
     {
-        public const string DefaultResponseType = "code+id_token";
+        public const string AuthCodeResponseType = "code";
+        public const string HybridResponseType = "code+id_token";
         public const string DefaultResponseMode = "form_post";
         public const string DefaultScope = "openid%20profile%20email";
         public const string DefaultNameClaimType = "name";
