@@ -5,7 +5,7 @@ using Octopus.Server.MessageContracts;
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
 {
     [Description("Sign in to your Octopus Server with an Octopus ID. [Learn more](https://g.octopushq.com/AuthOctopusID).")]
-    class OctopusIDConfigurationResource : OpenIDConnectConfigurationWithClientSecretResource
+    class OctopusIDConfigurationResource : OpenIDConnectConfigurationResource
     {
         [ReadOnly(true)]
         public override string? Issuer { get; set; }

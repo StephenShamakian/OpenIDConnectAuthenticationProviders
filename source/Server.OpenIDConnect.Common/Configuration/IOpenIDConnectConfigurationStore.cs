@@ -18,6 +18,10 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Confi
         string? GetClientId();
         void SetClientId(string? clientId);
 
+        SensitiveString? GetClientSecret();
+        void SetClientSecret(SensitiveString? clientSecret);
+        bool HasClientSecret { get; }
+
         string? GetScope();
         void SetScope(string? scope);
 

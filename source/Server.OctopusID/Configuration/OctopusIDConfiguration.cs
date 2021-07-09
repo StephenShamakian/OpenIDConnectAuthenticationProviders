@@ -2,7 +2,7 @@
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
 {
-    class OctopusIDConfiguration : OpenIDConnectConfigurationWithClientSecret, IOpenIDConnectConfigurationWithRole
+    class OctopusIDConfiguration : OpenIDConnectConfiguration, IOpenIDConnectConfigurationWithRole
     {
         public static string DefaultRoleClaimType = "roles";
 

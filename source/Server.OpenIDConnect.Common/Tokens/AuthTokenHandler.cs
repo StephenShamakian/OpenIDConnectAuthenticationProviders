@@ -88,9 +88,9 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
 
         ClaimsPrincipal ValidateUsingSharedSecret(TokenValidationParameters validationParameters, string? tokenToValidate)
         {
-            if (ConfigurationStore is IOpenIDConnectWithClientSecretConfigurationStore clientSecretStore)
+            if (ConfigurationStore.HasClientSecret)
             {
-                var clientSecret = clientSecretStore.GetClientSecret();
+                var clientSecret = ConfigurationStore.GetClientSecret();
                 if (clientSecret == null)
                     throw new ArgumentException("Client secret is not configured.");
                 validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(clientSecret.Value));
