@@ -43,7 +43,10 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
                 idToken = requestForm["id_token"];
             }
 
-            stateString = requestForm["state"];
+            if (requestForm.ContainsKey("state"))
+            {
+                stateString = requestForm["state"];
+            }
 
             return GetPrincipalFromToken(accessToken, idToken);
         }
