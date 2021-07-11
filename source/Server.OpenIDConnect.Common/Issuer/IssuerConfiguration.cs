@@ -11,5 +11,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issue
         
         [JsonProperty("authorization_endpoint")]
         public string AuthorizationEndpoint { get; set; } = string.Empty;
+
+        [JsonProperty("token_endpoint")]
+        public string TokenEndpoint { get; set; } = string.Empty;
     }
 }
