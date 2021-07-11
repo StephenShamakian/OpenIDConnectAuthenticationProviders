@@ -1,5 +1,4 @@
-﻿using System;
-using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
+﻿using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Identities;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Tokens;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Web;
@@ -16,6 +15,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
         {
             Add<GoogleAppsUserAuthenticationAction>("POST", authenticationProvider.AuthenticateUri, RouteCategory.Raw, new AnonymousWhenEnabledEndpointInvocation<IGoogleAppsConfigurationStore>(), null, "OpenIDConnect");
             Add<GoogleAppsUserAuthenticatedAction>("POST", configurationStore.RedirectUri, RouteCategory.Raw, new AnonymousWhenEnabledEndpointInvocation<IGoogleAppsConfigurationStore>(), null, "OpenIDConnect");
+            Add<GoogleAppsUserAuthenticationCodeAction>("GET", configurationStore.RedirectUri, RouteCategory.Raw, new AnonymousWhenEnabledEndpointInvocation<IGoogleAppsConfigurationStore>(), null, "OpenIDConnect");
         }
     }
 }

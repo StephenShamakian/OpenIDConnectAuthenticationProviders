@@ -63,6 +63,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
 
             builder.RegisterType<OktaUserAuthenticationAction>().AsSelf().InstancePerDependency();
             builder.RegisterType<OktaUserAuthenticatedAction>().AsSelf().InstancePerDependency();
+            builder.RegisterType<OktaUserAuthenticationCodeAction>().AsSelf().InstancePerDependency();
 
             builder.RegisterType<OktaAuthenticationProvider>()
                 .As<IAuthenticationProvider>()

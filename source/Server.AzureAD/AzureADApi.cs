@@ -1,5 +1,4 @@
-﻿using System;
-using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
+﻿using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Identities;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Tokens;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Web;
@@ -16,6 +15,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
         {
             Add<AzureADUserAuthenticationAction>("POST", authenticationProvider.AuthenticateUri, RouteCategory.Raw, new AnonymousWhenEnabledEndpointInvocation<IAzureADConfigurationStore>(), null, "OpenIDConnect");
             Add<AzureADUserAuthenticatedAction>("POST", configurationStore.RedirectUri, RouteCategory.Raw, new AnonymousWhenEnabledEndpointInvocation<IAzureADConfigurationStore>(), null, "OpenIDConnect");
+            Add<AzureADUserAuthenticationCodeAction>("GET", configurationStore.RedirectUri, RouteCategory.Raw, new AnonymousWhenEnabledEndpointInvocation<IAzureADConfigurationStore>(), null, "OpenIDConnect");
         }
     }
 }
