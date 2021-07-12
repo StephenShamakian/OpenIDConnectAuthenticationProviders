@@ -85,11 +85,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
 
         async Task<IOctoResponseProvider> Handle(string code, string state, IOctoRequest request)
         {
-            if (string.IsNullOrWhiteSpace(code))
-            {
-                return BadRequest("No authorization code was provided.");
-            }
-
             var redirectUri = $"{request.Scheme}://{request.Host}{ConfigurationStore.RedirectUri}";
             var response = await RequestAuthToken(code, redirectUri);
 
