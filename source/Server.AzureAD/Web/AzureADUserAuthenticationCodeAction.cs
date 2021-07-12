@@ -24,8 +24,9 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
             ISleep sleep,
             IAzureADIdentityCreator identityCreator,
             IClock clock,
-            IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer)
-            : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, authCookieCreator, loginTracker, sleep, identityCreator, clock, identityProviderConfigDiscoverer)
+            IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
+            IUrlEncoder urlEncoder)
+            : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, authCookieCreator, loginTracker, sleep, identityCreator, clock, identityProviderConfigDiscoverer, urlEncoder)
         {
         }
 

@@ -95,7 +95,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
         {
             var stateString = JsonConvert.SerializeObject(state);
             var url = urlBuilder.Build(model.ApiAbsUrl, issuerConfig, state: stateString);
-            var response = Result.Response(new LoginRedirectLinkResponseModel {ExternalAuthenticationUrl = url});
+            var response = Result.Response(new LoginRedirectLinkResponseModel {ExternalAuthenticationUrl = url})
+                .WithCookie(new OctoCookie(UserAuthConstants.OctopusStateCookieName, State.Protect(stateString)) {HttpOnly = true, Secure = state.UsingSecureConnection, Expires = DateTimeOffset.UtcNow.AddMinutes(20)});
             return response;
         }
 

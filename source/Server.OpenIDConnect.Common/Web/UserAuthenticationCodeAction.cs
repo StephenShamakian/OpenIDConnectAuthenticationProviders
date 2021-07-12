@@ -19,6 +19,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Tokens;
 using Octopus.Server.Extensibility.Authentication.Resources;
 using Octopus.Server.Extensibility.Authentication.Resources.Identities;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
+using Octopus.Server.Extensibility.HostServices.Web;
 using Octopus.Server.Extensibility.Results;
 using Octopus.Time;
 
@@ -44,6 +45,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
         readonly TIdentityCreator identityCreator;
         readonly IClock clock;
         readonly IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer;
+        readonly IUrlEncoder urlEncoder;
 
         protected UserAuthenticationCodeAction(
             ISystemLog log,
@@ -56,7 +58,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
             ISleep sleep,
             TIdentityCreator identityCreator,
             IClock clock,
-            IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer)
+            IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
+            IUrlEncoder urlEncoder)
         {
             this.log = log;
             this.authTokenHandler = authTokenHandler;
@@ -68,6 +71,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
             this.identityCreator = identityCreator;
             this.clock = clock;
             this.identityProviderConfigDiscoverer = identityProviderConfigDiscoverer;
+            this.urlEncoder = urlEncoder;
             ConfigurationStore = configurationStore;
         }
 
@@ -76,7 +80,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
 
         public async Task<IOctoResponseProvider> ExecuteAsync(IOctoRequest request)
         {
-            return await request.HandleAsync(Code, State, (code, state) => Handle(state, code, request));
+            return await request.HandleAsync(Code, State, (code, state) => Handle(code, state, request));
         }
 
         async Task<IOctoResponseProvider> Handle(string code, string state, IOctoRequest request)
@@ -97,7 +101,24 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
                 return BadRequest($"The response from the external identity provider contained an error: {principalContainer.Error}");
             }
 
-            var stateFromRequest = JsonConvert.DeserializeObject<LoginState>(stateStringFromRequest ?? state ?? string.Empty);
+            // Step 2: Validate the state object we passed wasn't tampered with
+            const string stateDescription = "As a security precaution, Octopus ensures the state object returned from the external identity provider matches what it expected.";
+            var expectedStateHash = string.Empty;
+            stateStringFromRequest ??= state;
+            if (request.Cookies.ContainsKey(UserAuthConstants.OctopusStateCookieName))
+                expectedStateHash = urlEncoder.UrlDecode(request.Cookies[UserAuthConstants.OctopusStateCookieName]);
+            if (string.IsNullOrWhiteSpace(expectedStateHash))
+            {
+                return BadRequest($"User login failed: Missing State Hash Cookie. {stateDescription} In this case the Cookie containing the SHA256 hash of the state object is missing from the request.");
+            }
+
+            var stateFromRequestHash = Infrastructure.State.Protect(stateStringFromRequest);
+            if (stateFromRequestHash != expectedStateHash)
+            {
+                return BadRequest($"User login failed: Tampered State. {stateDescription} In this case the state object looks like it has been tampered with. The state object is '{stateStringFromRequest}'. The SHA256 hash of the state was expected to be '{expectedStateHash}' but was '{stateFromRequestHash}'.");
+            }
+
+            var stateFromRequest = JsonConvert.DeserializeObject<LoginState>(stateStringFromRequest);
 
             // Step 3: Now the integrity of the request has been validated we can figure out which Octopus User this represents
             var authenticationCandidate = principalToUserResourceMapper.MapToUserResource(principal);

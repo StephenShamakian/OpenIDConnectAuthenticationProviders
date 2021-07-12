@@ -24,8 +24,9 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
             ISleep sleep,
             IGoogleAppsIdentityCreator identityCreator,
             IClock clock,
-            IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer)
-            : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, authCookieCreator, loginTracker, sleep, identityCreator, clock, identityProviderConfigDiscoverer)
+            IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
+            IUrlEncoder urlEncoder)
+            : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, authCookieCreator, loginTracker, sleep, identityCreator, clock, identityProviderConfigDiscoverer, urlEncoder)
         {
         }
 
