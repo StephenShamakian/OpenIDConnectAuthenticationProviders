@@ -76,85 +76,87 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
 
         public async Task<IOctoResponseProvider> ExecuteAsync(IOctoRequest request)
         {
-            return await request.HandleAsync(Code, State, async (code, state) =>
+            return await request.HandleAsync(Code, State, (code, state) => Handle(state, code, request));
+        }
+
+        async Task<IOctoResponseProvider> Handle(string code, string state, IOctoRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(code))
             {
-                if (string.IsNullOrWhiteSpace(code))
+                return BadRequest("No authorization code was provided.");
+            }
+
+            var redirectUri = $"{request.Scheme}://{request.Host}{ConfigurationStore.RedirectUri}";
+            var response = await RequestAuthToken(code, redirectUri);
+
+            // Step 1: Try and get all of the details from the request making sure there are no errors passed back from the external identity provider
+            var principalContainer = await authTokenHandler.GetPrincipalAsync(response, out var stateStringFromRequest);
+            var principal = principalContainer.Principal;
+            if (principal == null || !string.IsNullOrEmpty(principalContainer.Error))
+            {
+                return BadRequest($"The response from the external identity provider contained an error: {principalContainer.Error}");
+            }
+
+            var stateFromRequest = JsonConvert.DeserializeObject<LoginState>(stateStringFromRequest ?? state ?? string.Empty);
+
+            // Step 3: Now the integrity of the request has been validated we can figure out which Octopus User this represents
+            var authenticationCandidate = principalToUserResourceMapper.MapToUserResource(principal);
+            if (authenticationCandidate.Username == null)
+            {
+                return BadRequest("Unable to determine username.");
+            }
+
+            // Step 3a: Check if this authentication attempt is already being banned
+            var action = loginTracker.BeforeAttempt(authenticationCandidate.Username, request.Host);
+            if (action == InvalidLoginAction.Ban)
+            {
+                return BadRequest("You have had too many failed login attempts in a short period of time. Please try again later.");
+            }
+
+            using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
+            {
+                // Step 3b: Try to get or create a the Octopus User this external identity represents
+                var userResult = GetOrCreateUser(authenticationCandidate, principalContainer.ExternalGroupIds, cts.Token);
+                if (userResult is ISuccessResult<IUser> successResult)
                 {
-                    return BadRequest("No authorization code was provided.");
-                }
+                    loginTracker.RecordSucess(authenticationCandidate.Username, request.Host);
 
-                var redirectUri = $"{request.Scheme}://{request.Host}{ConfigurationStore.RedirectUri}";
-                var response = await RequestAuthToken(code, redirectUri);
-
-                // Step 1: Try and get all of the details from the request making sure there are no errors passed back from the external identity provider
-                var principalContainer = await authTokenHandler.GetPrincipalAsync(response, out var stateStringFromRequest);
-                var principal = principalContainer.Principal;
-                if (principal == null || !string.IsNullOrEmpty(principalContainer.Error))
-                {
-                    return BadRequest($"The response from the external identity provider contained an error: {principalContainer.Error}");
-                }
-
-                var stateFromRequest = JsonConvert.DeserializeObject<LoginState>(stateStringFromRequest ?? state ?? string.Empty);
-
-                // Step 3: Now the integrity of the request has been validated we can figure out which Octopus User this represents
-                var authenticationCandidate = principalToUserResourceMapper.MapToUserResource(principal);
-                if (authenticationCandidate.Username == null)
-                {
-                    return BadRequest("Unable to determine username.");
-                }
-
-                // Step 3a: Check if this authentication attempt is already being banned
-                var action = loginTracker.BeforeAttempt(authenticationCandidate.Username, request.Host);
-                if (action == InvalidLoginAction.Ban)
-                {
-                    return BadRequest("You have had too many failed login attempts in a short period of time. Please try again later.");
-                }
-
-                using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
-                {
-                    // Step 3b: Try to get or create a the Octopus User this external identity represents
-                    var userResult = GetOrCreateUser(authenticationCandidate, principalContainer.ExternalGroupIds, cts.Token);
-                    if (userResult is ISuccessResult<IUser> successResult)
+                    if (!successResult.Value.IsActive)
                     {
-                        loginTracker.RecordSucess(authenticationCandidate.Username, request.Host);
-
-                        if (!successResult.Value.IsActive)
-                        {
-                            return BadRequest($"The Octopus User Account '{authenticationCandidate.Username}' has been disabled by an Administrator. If you believe this to be a mistake, please contact your Octopus Administrator to have your account re-enabled.");
-                        }
-
-                        if (successResult.Value.IsService)
-                        {
-                            return BadRequest($"The Octopus User Account '{authenticationCandidate.Username}' is a Service Account, which are prevented from using Octopus interactively. Service Accounts are designed to authorize external systems to access the Octopus API using an API Key.");
-                        }
-
-                        var octoResponse = Redirect.Response(stateFromRequest.RedirectAfterLoginTo)
-                            .WithHeader("Expires", new[] {DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo)})
-                            .WithCookie(new OctoCookie(UserAuthConstants.OctopusStateCookieName, Guid.NewGuid().ToString()) {HttpOnly = true, Secure = false, Expires = DateTimeOffset.MinValue})
-                            .WithCookie(new OctoCookie(UserAuthConstants.OctopusNonceCookieName, Guid.NewGuid().ToString()) {HttpOnly = true, Secure = false, Expires = DateTimeOffset.MinValue});
-
-                        var authCookies = authCookieCreator.CreateAuthCookies(successResult.Value.IdentificationToken, SessionExpiry.TwentyDays, request.IsHttps, stateFromRequest.UsingSecureConnection);
-
-                        foreach (var cookie in authCookies)
-                        {
-                            octoResponse = octoResponse.WithCookie(cookie);
-                        }
-
-                        return octoResponse;
+                        return BadRequest($"The Octopus User Account '{authenticationCandidate.Username}' has been disabled by an Administrator. If you believe this to be a mistake, please contact your Octopus Administrator to have your account re-enabled.");
                     }
 
-                    // Step 4: Handle other types of failures
-                    loginTracker.RecordFailure(authenticationCandidate.Username, request.Host);
-
-                    // Step 4a: Slow this potential attacker down a bit since they seem to keep failing
-                    if (action == InvalidLoginAction.Slow)
+                    if (successResult.Value.IsService)
                     {
-                        sleep.For(1000);
+                        return BadRequest($"The Octopus User Account '{authenticationCandidate.Username}' is a Service Account, which are prevented from using Octopus interactively. Service Accounts are designed to authorize external systems to access the Octopus API using an API Key.");
                     }
 
-                    return BadRequest($"User login failed: {((IFailureResult) userResult).ErrorString}");
+                    var octoResponse = Redirect.Response(stateFromRequest.RedirectAfterLoginTo)
+                        .WithHeader("Expires", new[] {DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo)})
+                        .WithCookie(new OctoCookie(UserAuthConstants.OctopusStateCookieName, Guid.NewGuid().ToString()) {HttpOnly = true, Secure = false, Expires = DateTimeOffset.MinValue})
+                        .WithCookie(new OctoCookie(UserAuthConstants.OctopusNonceCookieName, Guid.NewGuid().ToString()) {HttpOnly = true, Secure = false, Expires = DateTimeOffset.MinValue});
+
+                    var authCookies = authCookieCreator.CreateAuthCookies(successResult.Value.IdentificationToken, SessionExpiry.TwentyDays, request.IsHttps, stateFromRequest.UsingSecureConnection);
+
+                    foreach (var cookie in authCookies)
+                    {
+                        octoResponse = octoResponse.WithCookie(cookie);
+                    }
+
+                    return octoResponse;
                 }
-            });
+
+                // Step 4: Handle other types of failures
+                loginTracker.RecordFailure(authenticationCandidate.Username, request.Host);
+
+                // Step 4a: Slow this potential attacker down a bit since they seem to keep failing
+                if (action == InvalidLoginAction.Slow)
+                {
+                    sleep.For(1000);
+                }
+
+                return BadRequest($"User login failed: {((IFailureResult) userResult).ErrorString}");
+            }
         }
 
         async Task<IDictionary<string, string?>> RequestAuthToken(string code, string redirectUri)
