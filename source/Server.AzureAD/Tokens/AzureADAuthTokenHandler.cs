@@ -22,16 +22,16 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
 
         protected class MicrosoftGraphResponse
         {
-            public string? odata;
-            public List<String>? value;
+            public string? odata {get; set;}
+            public List<String>? value { get; set; }
         }
 
         protected class MicrosoftGraphTokenResponse
         {
-            public string? token_type;
-            public int expires_in;
-            public int ext_expires_in;
-            public string? access_token;
+            public string? token_type { get; set; }
+            public int expires_in { get; set; }
+            public int ext_expires_in { get; set; }
+            public string? access_token { get; set; }
         }
 
         protected async Task<string[]> FollowGroupApiCall(ClaimsPrincipal principal)

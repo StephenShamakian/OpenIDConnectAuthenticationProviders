@@ -12,6 +12,6 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
             RoleClaimType = DefaultRoleClaimType;
         }
 
-        public SensitiveString ClientKey { get; set; }
+        public SensitiveString? ClientKey { get; set; }
     }
 }

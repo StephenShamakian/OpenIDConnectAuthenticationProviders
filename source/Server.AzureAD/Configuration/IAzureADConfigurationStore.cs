@@ -6,8 +6,8 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
     interface IAzureADConfigurationStore : IOpenIDConnectConfigurationWithRoleStore<AzureADConfiguration>
     {
 
-        SensitiveString GetClientKey();
-        void SetClientKey(SensitiveString key);
+        SensitiveString? GetClientKey();
+        void SetClientKey(SensitiveString? key);
 
     }
 }

@@ -16,6 +16,6 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
         [DisplayName("Client Access Key")]
         [Description("The App Registration secret access key. Used for authenticating against the GraphAPI for group overage lookups.")]
         [Writeable]
-        public SensitiveValue ClientKey { get; set; }
+        public SensitiveValue? ClientKey { get; set; }
     }
 }
