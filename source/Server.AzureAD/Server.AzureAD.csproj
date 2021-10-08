@@ -28,4 +28,9 @@
     <ProjectReference Include="..\Server.OpenIDConnect.Common\Server.OpenIDConnect.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Octopus.Server.Extensibility" Version="14.1.0" />
+    <PackageReference Include="Octopus.Server.Extensibility.Authentication" Version="10.0.3.0" />
+  </ItemGroup>
+
 </Project>

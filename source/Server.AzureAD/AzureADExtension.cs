@@ -20,7 +20,7 @@ using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD
 {
-    [OctopusPlugin("AzureAD", "Octopus Deploy")]
+    [OctopusPlugin("AzureAD - GraphAPI Support", "Octopus Deploy (Modified by: Stephen Shamakian)")]
     public class AzureADExtension : OpenIDConnectExtension, IOctopusExtension
     {
         public override void Load(ContainerBuilder builder)
