@@ -1,28 +1,42 @@
 ﻿.googleapps-button {
-    background-color: #dc4e41;
-    color: #ffffff;
     cursor: pointer;
     border-radius: 2px;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.24), 0 0 1px 0 rgba(0, 0, 0, 0.12);
     display: flex;
+    align-items: stretch;
+}
+
+.googleapps-button-image {
+    display:flex;
+    justify-content: center;
     align-items: center;
-    padding-top: 0.8125rem;
-    padding-bottom: 0.8125rem;
+    padding-left: 0.8125rem;
+    padding-right: 0.8125rem;
 }
 
-.googleapps-button:hover {
-    background-color: #c53829;
+.googleapps-button.light {
+    background-color: #fff;
+    color: #757575;
 }
 
-.googleapps-button img {
-    margin-left: 0.8125rem;
+.googleapps-button.dark {
+    background-color: #4285f4;
+    color: #fff;
 }
 
-.googleapps-button div {
-    font-family: 'Roboto', sans-serif;
+.googleapps-button:hover{
+    box-shadow: 0 0 3px 3px rgba(66,133,244,.3);
+}
+
+.googleapps-button.dark > .googleapps-button-image {
+    background-color: #fff;
+    border: solid 1px #4285f4;
+}
+
+.googleapps-button-text {
+    padding: 0.8125rem;
+    font-family: "Roboto", sans-serif;
     font-weight: 600;
-    display: inline-block;
     text-align: left;
-    margin-left: 0.8125rem;
     overflow: hidden;
 }
