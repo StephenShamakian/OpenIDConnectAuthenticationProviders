@@ -32,15 +32,4 @@
     <ProjectReference Include="..\Server.OpenIDConnect.Common\Server.OpenIDConnect.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <!-- Stephen Shamakian: I had to add these to avoid mis-aligned versions with in development Octopus.Server versions. Make sure these versions match the .dll's that are on the Octopus servers. -->
-    <PackageReference Include="Octopus.Server.Extensibility" Version="14.1.0">
-      <NoWarn>NU1605</NoWarn>
-    </PackageReference>
-    <PackageReference Include="Octopus.Server.Extensibility.Authentication" Version="10.0.3.0">
-      <NoWarn>NU1605</NoWarn>
-    </PackageReference>
-    <!-- Stephen Shamakian: END NOTE -->
-  </ItemGroup>
-
 </Project>

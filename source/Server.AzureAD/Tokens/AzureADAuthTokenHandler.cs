@@ -43,7 +43,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
             if (string.IsNullOrWhiteSpace(clientId))
             {
                 // Failed to get Access Token
-                Log.Error("ERROR: CVS Azure AD - Failed to get App Registration Client ID from Octopus Configuration Store!");
+                Log.Error("+++ AzureAD-GraphAPI: ERROR - Failed to get App Registration Client ID from Octopus Configuration Store!");
                 return new string[0];
             }
 
@@ -52,7 +52,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
             if (String.IsNullOrWhiteSpace(clientKey))
             {
                 // Failed to get Access Token
-                Log.Error("ERROR: CVS Azure AD - Failed to get App Registration Client Key from Octopus Configuration Store!");
+                Log.Error("+++ AzureAD-GraphAPI: ERROR - Failed to get App Registration Client Key from Octopus Configuration Store!");
                 return new string[0];
             }
 
@@ -88,7 +88,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
                 else
                 {
                     // Failed to get Access Token
-                    Log.Error("ERROR: CVS Azure AD - Failed to get user's Access Token!");
+                    Log.Error("+++ AzureAD-GraphAPI: ERROR - Failed to get user's Access Token!");
                     return new string[0];
                 }
 
@@ -120,7 +120,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
                     else
                     {
                         // Failed to get Group Memberships
-                        Log.Error("ERROR: CVS Azure AD - Failed to get list of groups from the AzureAD Graph API!");
+                        Log.Error("+++ AzureAD-GraphAPI: ERROR - Failed to get list of groups from the AzureAD Graph API!");
                         return new string[0];
                     }
 
@@ -131,14 +131,14 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
                 else
                 {
                     // Failed to get Group Memberships
-                    Log.Error("ERROR: CVS Azure AD - Failed to get group membership via the AzureAD Graph API!");
+                    Log.Error("+++ AzureAD-GraphAPI: ERROR - Failed to get group membership via the AzureAD Graph API!");
                     return new string[0];
                 }
             }
             else
             {
                 // Failed to get Auth Token
-                Log.Error("ERROR: CVS Azure AD - Failed to get Auth Token for group membership API!");
+                Log.Error("+++ AzureAD-GraphAPI: ERROR - Failed to get Auth Token for group membership API!");
                 return new string[0];
             }
         }
@@ -153,11 +153,20 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
                 return new string[0];
             }
 
+            String? clientKey = ConfigurationStore.GetClientKey()?.Value;
 
-            if (principal.FindFirst("_claim_names") != null)
+            // Lets get some additional claim data for better logging
+            string claimNames = principal.Claims.FirstOrDefault(c => string.Equals(c.Type, "_claim_names", StringComparison.OrdinalIgnoreCase)).Value;
+            string claimUsersEmail = principal.Claims.FirstOrDefault(c => string.Equals(c.Type, ClaimTypes.Email, StringComparison.OrdinalIgnoreCase)).Value;
+            string claimUsersOid = principal.Claims.FirstOrDefault(c => string.Equals(c.Type, "http://schemas.microsoft.com/identity/claims/objectidentifier", StringComparison.OrdinalIgnoreCase)).Value;
+
+
+            if ((principal.FindFirst("_claim_names") != null) && (!String.IsNullOrWhiteSpace(clientKey)) && (claimNames == "{\"groups\":\"src1\"}"))
             {
 
-                // If this claim has the "_claim_names" present this means this user is over the 150/200 group limit in the token. We need to follow the Microsoft Graph API
+                // If this claim has the "_claim_names" present this means this user is over the 150/200 group limit in the token. We need to follow the Microsoft Azure Graph API. But only if the Client Key is set in the AzureAD Octopus configuration.
+                Log.Info("+++ AzureAD-GraphAPI: UserAuth - Using Azure GraphAPI group lookup endpoint - ("+ claimUsersEmail + " - "+ claimUsersOid + ")");
+                
                 return FollowGroupApiCall(principal).Result;
 
             }
@@ -166,6 +175,8 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
 
                 // the groups Ids consist of external Role and Group identifiers. We always load ClaimTypes.Role claims
                 // as external identifiers, and then also based on a custom claim specified by the provider.
+                Log.Info("+++ AzureAD-GraphAPI: UserAuth - Using JWT token groups - (" + claimUsersEmail + " - " + claimUsersOid + ")");
+                
                 var groups = principal.FindAll(ClaimTypes.Role)
                     .Concat(principal.FindAll(roleClaimType))
                     .Select(c => c.Value).ToArray();

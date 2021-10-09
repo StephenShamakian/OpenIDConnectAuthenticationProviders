@@ -14,7 +14,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
         public string? RoleClaimType { get; set; }
 
         [DisplayName("Client Access Key")]
-        [Description("The App Registration secret access key. Used for authenticating against the GraphAPI for group overage lookups.")]
+        [Description("The Azure app registration secret access key. This is used for authenticating against the Azure GraphAPI for group overage lookups. If left blank it will disable Azure GraphAPI lookups. [Learn more](https://github.com/StephenShamakian/OpenIDConnectAuthenticationProviders#readme)")]
         [Writeable]
         public SensitiveValue? ClientKey { get; set; }
     }
