@@ -6,7 +6,7 @@ There are two primary ways to interface with AzureAD, SAML or OpenID (Octopus us
 There are ways to wildcard limit how many groups are returned in AzureAD tokens based on a prefix. For example "devops_[groupNameHere]". But this feature in AzureAD does not work for OpenID. And Octopus only implements OpenID with its AzureAD implementation. Plus it's still (as of the writing of this) a preview feature in AzureAD for SAML.
 
 ## Microsoft/AzureAD's "Solution" to this Limitation
-If there are two many groups returned in a token sent by AzureAD. Microsoft includes a custom claim "_claims_name" & "_claims_sources" that has a link to the Azure GraphAPI (an old deprecated one - more on that below) that has the group membership list for the user. They (Microsoft) expect applications to implement this in their code when developing AzureAD integrations.
+If there are too many groups returned in a token sent by AzureAD. Microsoft includes a custom claim "_claims_name" & "_claims_sources" that has a link to the Azure GraphAPI (an old deprecated one - more on that below) that has the group membership list for the user. They (Microsoft) expect applications to implement this in their code when developing AzureAD integrations.
 
 See more [here](https://github.com/Azure-Samples/active-directory-aspnetcore-webapp-openidconnect-v2/tree/master/5-WebApp-AuthZ/5-2-Groups#processing-groups-claim-in-tokens-including-handling-overage). They also include an example ASP.NET Core application code that implements this [here](https://github.com/Azure-Samples/active-directory-aspnetcore-webapp-openidconnect-v2/blob/master/5-WebApp-AuthZ/5-2-Groups/Services/MicrosoftGraph-Rest/GraphHelper.cs).
 
@@ -18,9 +18,9 @@ I mentioned above that I am not following the exact Azure GraphAPI endpoint that
 
 ## Installation, Configuration and Usage
 ### Installation:
-I had all kinds of problems getting this extension to work. Sadly it wasn't as easy as stated on the [Octopus Documentation page](https://octopus.com/docs/administration/server-extensibility/installing-a-custom-server-extension). I had to write a custom PowerShell script that copied the .dll's it needed to function from the Octopus install path.
+I had all kinds of problems getting this customized AzureAD extension to work. Sadly it wasn't as easy as stated on the [Octopus Documentation page](https://octopus.com/docs/administration/server-extensibility/installing-a-custom-server-extension). I had to write a custom PowerShell script that copied the .dll's it needed to function from the Octopus install path into the Octopus CustomExtensions path.
 
-1. At the root of this repo there is a PowerShell script named "Update-OctopusReferences.ps1". Place this in the CustomExtensions folder located here "_%ProgramData%\Octopus\CustomExtensions_" on your Octopus Server. Also make sure the file paths listed in this PowerShell script at the top are correct. This Powershell script will basically copy a few .dll dependencies from the root Octopus Server install folder to this "_CustomExtensions_" folder to allow the modified AzureAD extension to run without erroring out.
+1. At the root of this repo there is a PowerShell script named "Update-OctopusReferences.ps1". Place this in the CustomExtensions folder located here "_%ProgramData%\Octopus\CustomExtensions_" on your Octopus Server. Also make sure the file paths listed in this PowerShell script at the top are correct. This PowerShell script will basically copy a few .dll dependencies from the root Octopus Server install folder to this "_CustomExtensions_" folder to allow the modified AzureAD extension to run without erroring out.
 2. Build the code in this fork using the documentation listed [here](https://octopus.com/docs/administration/server-extensibility/customizing-an-octopus-deploy-server-extension).
 3. Copy the newly built dll file named "_Octopus.Server.Extensibility.Authentication.AzureAD.dll_" to the "_%ProgramData%\Octopus\CustomExtensions_" location on the Octopus Server. Along side the above PowerShell script.
 4. Stop the Octopus Server service.
@@ -29,7 +29,7 @@ I had all kinds of problems getting this extension to work. Sadly it wasn't as e
 7. Keep in mind that whenever you upgrade your Octopus Server you will need to run this PowerShell script to verify you are running with the latest .dll dependencies from the root Octopus Server install folder. My recommendation is to run it right after the installer completes the file copy but before you click "_Finish_" on the installer.
 
 ### Configuration: 
-This modified plugin will work exactly like it has before by default. In order to enable the new functionality, you will need to browse to "_Octopus Web UI > Configuration > Settings > AzureAD_" and specified a "_Client Access Key_". This is a secret key that is generated on the Azure App Registration that you use for AzureAD integration.
+This modified plugin will work exactly like it has before by default. In order to enable the new functionality, you will need to browse to "_Octopus Web UI > Configuration > Settings > AzureAD_" and specify a "_Client Access Key_". This is a secret key that is generated on the Azure App Registration that you use for AzureAD integration.
 
 To generate a Client Access Key go to the Azure Portal, open up the Azure App Registration for Octopus and click the menu item called "_Certificates & Secrets_". Click the "_New Client Secret_" link towards the bottom to generate a new key. This key needs to be entered into the "_Client Access Key_" field in Octopus AzureAD Settings.
 
