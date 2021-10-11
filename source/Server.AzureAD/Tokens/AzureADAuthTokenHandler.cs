@@ -56,7 +56,17 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
                 return new string[0];
             }
 
-            string tenantId = principal.Claims.FirstOrDefault(c => string.Equals(c.Type, "http://schemas.microsoft.com/identity/claims/tenantid", StringComparison.OrdinalIgnoreCase)).Value;
+            string? tenantId = null;
+            if (principal.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid") != null)
+            {
+                tenantId = principal.Claims.FirstOrDefault(c => string.Equals(c.Type, "http://schemas.microsoft.com/identity/claims/tenantid", StringComparison.OrdinalIgnoreCase)).Value;
+            }
+            else
+            {
+                // Failed to get tenantId from claim data
+                Log.Error("+++ AzureAD-GraphAPI: ERROR - Failed to get AzureAD TenantID (tid) from claim data. Make sure tenantid is returned in the claim!");
+                return new string[0];
+            }
 
             HttpClient client = new HttpClient();
 
@@ -92,7 +102,17 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
                     return new string[0];
                 }
 
-                string userObjectId = principal.Claims.FirstOrDefault(c => string.Equals(c.Type, "http://schemas.microsoft.com/identity/claims/objectidentifier", StringComparison.OrdinalIgnoreCase)).Value;
+                string? userObjectId = null;
+                if (principal.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier") != null)
+                {
+                    userObjectId = principal.Claims.FirstOrDefault(c => string.Equals(c.Type, "http://schemas.microsoft.com/identity/claims/objectidentifier", StringComparison.OrdinalIgnoreCase)).Value;
+                }
+                else
+                {
+                    // Failed to get userObjectId from claim data
+                    Log.Error("+++ AzureAD-GraphAPI: ERROR - Failed to get AzureAD User Object ID (oid) from claim data. Make sure the user oid is returned in the claim!");
+                    return new string[0];
+                }
 
                 string requestUrl = "https://graph.microsoft.com/v1.0/" + tenantId + "/users/" + userObjectId + "/getMemberObjects";
 
@@ -130,15 +150,21 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
                 }
                 else
                 {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+
                     // Failed to get Group Memberships
                     Log.Error("+++ AzureAD-GraphAPI: ERROR - Failed to get group membership via the AzureAD Graph API!");
+                    Log.Error("+++ AzureAD-GraphAPI: ERROR - " + responseContent);
                     return new string[0];
                 }
             }
             else
             {
+                string responseTokenContent = await responseToken.Content.ReadAsStringAsync();
+
                 // Failed to get Auth Token
                 Log.Error("+++ AzureAD-GraphAPI: ERROR - Failed to get Auth Token for group membership API!");
+                Log.Error("+++ AzureAD-GraphAPI: ERROR - " + responseTokenContent);
                 return new string[0];
             }
         }
@@ -153,15 +179,37 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
                 return new string[0];
             }
 
+            // Get Octopus AzureAD COnfiguration - Client Access Key
             String? clientKey = ConfigurationStore.GetClientKey()?.Value;
 
-            // Lets get some additional claim data for better logging
-            string claimNames = principal.Claims.FirstOrDefault(c => string.Equals(c.Type, "_claim_names", StringComparison.OrdinalIgnoreCase)).Value;
-            string claimUsersEmail = principal.Claims.FirstOrDefault(c => string.Equals(c.Type, ClaimTypes.Email, StringComparison.OrdinalIgnoreCase)).Value;
-            string claimUsersOid = principal.Claims.FirstOrDefault(c => string.Equals(c.Type, "http://schemas.microsoft.com/identity/claims/objectidentifier", StringComparison.OrdinalIgnoreCase)).Value;
+
+            // Retrieve "_claims_names" token value if set, if not null
+            string? claimNames = null;
+            if (principal.FindFirst("_claim_names") != null) 
+            {
+                claimNames = principal.Claims.FirstOrDefault(c => string.Equals(c.Type, "_claim_names", StringComparison.OrdinalIgnoreCase)).Value;
+            }
 
 
-            if ((principal.FindFirst("_claim_names") != null) && (!String.IsNullOrWhiteSpace(clientKey)) && (claimNames == "{\"groups\":\"src1\"}"))
+            // Get some additional claim data for better logging
+            string claimUsersEmail = "(Email token not present in claim!)";
+            if (principal.FindFirst(ClaimTypes.Email) != null)
+            {
+                claimUsersEmail = principal.Claims.FirstOrDefault(c => string.Equals(c.Type, ClaimTypes.Email, StringComparison.OrdinalIgnoreCase)).Value;
+            }
+
+            string claimUsersOid = "(Object ID (oid) token not present in claim!)";
+            if (principal.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier") != null)
+            {
+                claimUsersOid = principal.Claims.FirstOrDefault(c => string.Equals(c.Type, "http://schemas.microsoft.com/identity/claims/objectidentifier", StringComparison.OrdinalIgnoreCase)).Value;
+            }
+
+            // Only follow the Microsoft GraphAPI for group membership If:
+            //   - Octopus AzureAD Config Client Access Key is set
+            //   - claimNames is not null
+            //   - claimNames has the value of: {"groups":"src1"}
+            // Else look for group membership in JWT token
+            if ((!String.IsNullOrWhiteSpace(clientKey)) && (!String.IsNullOrWhiteSpace(claimNames)) && (claimNames == "{\"groups\":\"src1\"}"))
             {
 
                 // If this claim has the "_claim_names" present this means this user is over the 150/200 group limit in the token. We need to follow the Microsoft Azure Graph API. But only if the Client Key is set in the AzureAD Octopus configuration.
