@@ -27,7 +27,7 @@
     <EmbeddedResource Include="Web\Static\fonts\Roboto-Regular.ttf" />
     <EmbeddedResource Include="Web\Static\fonts\Roboto-Thin.ttf" />
     <EmbeddedResource Include="Web\Static\fonts\Roboto-ThinItalic.ttf" />
-    <EmbeddedResource Include="Web\Static\images\google_signin_buttons\icon-google.svg" />
+    <EmbeddedResource Include="Web\Static\images\google_signin_buttons\icon-google-v1.svg" />
     <EmbeddedResource Include="Web\Static\styles\googleApps.css" />
     <None Include="Web\Static\fonts\LICENSE.txt" />
     <EmbeddedResource Include="Web\Static\areas\users\googleApps_auth_provider.js" />
