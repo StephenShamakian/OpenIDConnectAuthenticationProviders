@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Octopus.Server.Extensibility.Authentication.AzureAD</RootNamespace>
     <AssemblyName>Octopus.Server.Extensibility.Authentication.AzureAD</AssemblyName>
     <Description>Octopus Deploy: Extensibility.Authentication.AzureAD</Description>
@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Octopus.Diagnostics" Version="2.1.1" />
+    <PackageReference Include="Octopus.Diagnostics" Version="2.1.2" />
   </ItemGroup>
 
   <ItemGroup>

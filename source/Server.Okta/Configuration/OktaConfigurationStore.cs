@@ -3,7 +3,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configura
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
-    class OktaConfigurationStore : OpenIdConnectConfigurationWithRoleStore<OktaConfiguration>, IOktaConfigurationStore
+    class OktaConfigurationStore : OpenIDConnectConfigurationWithRoleStore<OktaConfiguration>, IOktaConfigurationStore
     {
         public const string SingletonId = "authentication-od";
 

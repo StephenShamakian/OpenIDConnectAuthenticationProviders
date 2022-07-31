@@ -3,14 +3,14 @@ using System.Security.Claims;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Tokens
 {
-    public class ClaimsPrincipleContainer
+    public class ClaimsPrincipalContainer
     {
-        public ClaimsPrincipleContainer(string error)
+        public ClaimsPrincipalContainer(string error)
         {
             this.Error = error;
             ExternalGroupIds = Array.Empty<string>();
         }
-        public ClaimsPrincipleContainer(ClaimsPrincipal principal, string[] externalGroupIds)
+        public ClaimsPrincipalContainer(ClaimsPrincipal principal, string[] externalGroupIds)
         {
             this.Principal = principal;
             ExternalGroupIds = externalGroupIds;

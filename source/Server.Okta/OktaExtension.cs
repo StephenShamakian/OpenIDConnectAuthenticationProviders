@@ -62,6 +62,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
             builder.RegisterType<OktaStaticContentFolders>().As<IContributesStaticContentFolders>().InstancePerDependency();
 
             builder.RegisterType<OktaUserAuthenticationAction>().AsSelf().InstancePerDependency();
+            builder.RegisterType<OktaUserAuthenticatedPkceAction>().AsSelf().InstancePerDependency();
             builder.RegisterType<OktaUserAuthenticatedAction>().AsSelf().InstancePerDependency();
 
             builder.RegisterType<OktaAuthenticationProvider>()

@@ -17,14 +17,24 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
             ISystemLog log,
             IGoogleAuthTokenHandler authTokenHandler,
             IPrincipalToUserResourceMapper principalToUserResourceMapper,
-            IUpdateableUserStore userStore,
             IGoogleAppsConfigurationStore configurationStore,
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
             ISleep sleep,
             IGoogleAppsIdentityCreator identityCreator,
-            IClock clock, IUrlEncoder encoder)
-            : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, authCookieCreator, loginTracker, sleep, identityCreator, clock, encoder)
+            IUrlEncoder encoder,
+            IUserService userService) :
+            base(
+                log,
+                authTokenHandler,
+                principalToUserResourceMapper,
+                configurationStore,
+                authCookieCreator,
+                loginTracker,
+                sleep,
+                identityCreator,
+                encoder,
+                userService)
         {
         }
 

@@ -58,6 +58,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
             builder.RegisterType<GoogleKeyRetriever>().As<IGoogleKeyRetriever>().SingleInstance();
 
             builder.RegisterType<GoogleAppsUserAuthenticationAction>().AsSelf().InstancePerDependency();
+            builder.RegisterType<GoogleAppsUserAuthenticatedPkceAction>().AsSelf().InstancePerDependency();
             builder.RegisterType<GoogleAppsUserAuthenticatedAction>().AsSelf().InstancePerDependency();
 
             builder.RegisterType<GoogleAppsAuthenticationProvider>()

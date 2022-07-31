@@ -40,9 +40,9 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Infra
             return GetClaimValue(principal, ClaimTypes.Email);
         }
 
-        protected virtual string GetDisplayName(ClaimsPrincipal principal)
+        protected virtual string? GetDisplayName(ClaimsPrincipal principal)
         {
-            return principal.Identity.Name;
+            return principal.Identity?.Name;
         }
 
         protected string? GetClaimValue(ClaimsPrincipal principal, string type)

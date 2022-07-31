@@ -4,6 +4,7 @@ using Octopus.Server.Extensibility.Authentication.OctopusID.Configuration;
 using Octopus.Server.Extensibility.Authentication.OctopusID.Issuer;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
+using Octopus.Server.Extensibility.Mediator;
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Web
 {
@@ -15,7 +16,8 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Web
             IOctopusIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
             IOctopusIDAuthorizationEndpointUrlBuilder urlBuilder,
             IApiActionModelBinder modelBinder,
-            IAuthenticationConfigurationStore authenticationConfigurationStore) : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, modelBinder, authenticationConfigurationStore)
+            IAuthenticationConfigurationStore authenticationConfigurationStore,
+            IMediator mediator) : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, modelBinder, authenticationConfigurationStore, mediator)
         {
         }
     }

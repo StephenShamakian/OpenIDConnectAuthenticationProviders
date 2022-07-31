@@ -7,7 +7,7 @@ using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
-    class OktaConfigureCommands : OpenIdConnectConfigureCommands<IOktaConfigurationStore>
+    class OktaConfigureCommands : OpenIDConnectConfigureCommands<IOktaConfigurationStore>
     {
         public OktaConfigureCommands(
             ISystemLog log,

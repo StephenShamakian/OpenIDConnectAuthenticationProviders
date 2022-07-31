@@ -7,7 +7,7 @@ using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
 {
-    class GoogleAppsConfigureCommands : OpenIdConnectConfigureCommands<IGoogleAppsConfigurationStore>
+    class GoogleAppsConfigureCommands : OpenIDConnectConfigureCommands<IGoogleAppsConfigurationStore>
     {
         public GoogleAppsConfigureCommands(
             ISystemLog log,

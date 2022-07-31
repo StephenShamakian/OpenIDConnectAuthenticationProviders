@@ -60,6 +60,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
             builder.RegisterType<AzureADStaticContentFolders>().As<IContributesStaticContentFolders>().InstancePerDependency();
 
             builder.RegisterType<AzureADUserAuthenticationAction>().AsSelf().InstancePerDependency();
+            builder.RegisterType<AzureADUserAuthenticatedPkceAction>().AsSelf().InstancePerDependency();
             builder.RegisterType<AzureADUserAuthenticatedAction>().AsSelf().InstancePerDependency();
 
             builder.RegisterType<AzureADAuthenticationProvider>()

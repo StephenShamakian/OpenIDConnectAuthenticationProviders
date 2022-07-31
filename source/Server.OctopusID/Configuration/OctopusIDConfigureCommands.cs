@@ -8,7 +8,7 @@ using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
 {
-    class OctopusIDConfigureCommands : OpenIdConnectConfigureCommands<IOctopusIDConfigurationStore>
+    class OctopusIDConfigureCommands : OpenIDConnectConfigureCommands<IOctopusIDConfigurationStore>
     {
         public OctopusIDConfigureCommands(
             ISystemLog log,
@@ -26,11 +26,6 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
             {
                 yield return option;
             }
-            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}ClientSecret=", "Tell Octopus the shared secret to use for Octopus ID authentication requests.", v =>
-            {
-                ConfigurationStore.Value.SetClientSecret(v.ToSensitiveString());
-                Log.Info($"{ConfigurationSettingsName} ClientSecret set");
-            }, hide: true);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Octopus.Client.Extensibility.Authentication.AzureAD</RootNamespace>
     <AssemblyName>Octopus.Client.Extensibility.Authentication.AzureAD</AssemblyName>
     <NeutralLanguage>en-US</NeutralLanguage>
@@ -11,12 +11,18 @@
     <Description>Octopus Deploy Client Extensibility for Azure AD</Description>
     <PackageId>Octopus.Client.Extensibility.Authentication.AzureAD</PackageId>
     <PackageIconUrl>http://i.octopusdeploy.com/resources/Avatar3_360.png</PackageIconUrl>
-    <PackageLicenseUrl>https://github.com/OctopusDeploy/OpenIDConnectAuthenticationProviders/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/OctopusDeploy/OpenIDConnectAuthenticationProviders</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Client.OpenIDConnect\Client.OpenIDConnect.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.txt" Pack="true" PackagePath=""/>
+    <None Include="..\..\build\icon.png" Pack="true" PackagePath=""/>
   </ItemGroup>
 
 </Project>

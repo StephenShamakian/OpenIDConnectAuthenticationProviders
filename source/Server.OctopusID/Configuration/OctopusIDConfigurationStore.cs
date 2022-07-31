@@ -3,7 +3,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configura
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
 {
-    class OctopusIDConfigurationStore : OpenIDConnectWithClientSecretConfigurationStore<OctopusIDConfiguration>, IOctopusIDConfigurationStore
+    class OctopusIDConfigurationStore : OpenIDConnectConfigurationStore<OctopusIDConfiguration>, IOctopusIDConfigurationStore
     {
         public const string SingletonId = "authentication-octopusid";
 

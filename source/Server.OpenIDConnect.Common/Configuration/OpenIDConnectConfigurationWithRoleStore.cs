@@ -3,10 +3,10 @@ using Octopus.Data.Storage.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration
 {
-    public abstract class OpenIdConnectConfigurationWithRoleStore<TConfiguration> : OpenIdConnectConfigurationStore<TConfiguration>, IOpenIDConnectConfigurationWithRoleStore<TConfiguration>
+    public abstract class OpenIDConnectConfigurationWithRoleStore<TConfiguration> : OpenIDConnectConfigurationStore<TConfiguration>, IOpenIDConnectConfigurationWithRoleStore<TConfiguration>
         where TConfiguration : OpenIDConnectConfigurationWithRole, IId, new()
     {
-        protected OpenIdConnectConfigurationWithRoleStore(IConfigurationStore configurationStore) : base(configurationStore)
+        protected OpenIDConnectConfigurationWithRoleStore(IConfigurationStore configurationStore) : base(configurationStore)
         {
         }
 

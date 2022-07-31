@@ -51,7 +51,6 @@ hgignore[.-]*
 ignore[.-]*
 svnignore[.-]*
 lint.db
-build
 tools/TestResult.xml
 *.ReSharper
 source/packages
@@ -60,11 +59,12 @@ source/OctopusTools.v2.ncrunchsolution
 *.userprefs
 *.lock.json
 .vs
+.idea
 .vscode
 /tools/*
 /artifacts/
 /publish/
-TestResult.xml
 !packages.config
-.idea
-**/TestResults/
+TestResult.xml
+*.DS_Store
+**/*.DS_Store

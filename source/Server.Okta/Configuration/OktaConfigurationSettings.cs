@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
-    class OktaConfigurationSettings : OpenIdConnectConfigurationSettings<OktaConfiguration, OktaConfigurationResource, IOktaConfigurationStore>, IOktaConfigurationSettings
+    class OktaConfigurationSettings : OpenIDConnectConfigurationSettings<OktaConfiguration, OktaConfigurationResource, IOktaConfigurationStore>, IOktaConfigurationSettings
     {
         public OktaConfigurationSettings(IOktaConfigurationStore configurationDocumentStore) : base(configurationDocumentStore)
         {

@@ -5,12 +5,12 @@ using Octopus.Server.Extensibility.HostServices.Mapping;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration
 {
-    public abstract class OpenIdConnectConfigurationSettings<TConfiguration, TResource, TDocumentStore> : ExtensionConfigurationSettings<TConfiguration, TResource, TDocumentStore>
+    public abstract class OpenIDConnectConfigurationSettings<TConfiguration, TResource, TDocumentStore> : ExtensionConfigurationSettings<TConfiguration, TResource, TDocumentStore>
         where TConfiguration : OpenIDConnectConfiguration, new()
         where TResource : ExtensionConfigurationResource
         where TDocumentStore : IOpenIDConnectConfigurationStore<TConfiguration>
     {
-        protected OpenIdConnectConfigurationSettings(TDocumentStore configurationDocumentStore) : base(configurationDocumentStore)
+        protected OpenIDConnectConfigurationSettings(TDocumentStore configurationDocumentStore) : base(configurationDocumentStore)
         {
         }
 

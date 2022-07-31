@@ -36,7 +36,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
             this.keyRetriever = keyRetriever;
         }
 
-        protected async Task<ClaimsPrincipleContainer> GetPrincipalFromToken(string? accessToken, string? idToken)
+        protected async Task<ClaimsPrincipalContainer> GetPrincipalFromToken(string? accessToken, string? idToken)
         {
             ClaimsPrincipal? principal = null;
 
@@ -47,7 +47,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
             {
                 ValidateActor = true,
                 ValidateAudience = true,
-                ValidAudience = issuer + "/resources",
+                ValidAudience = ConfigurationStore.GetClientId(),
                 ValidateIssuer = true,
                 ValidIssuer = issuerConfig.Issuer,
                 ValidateIssuerSigningKey = true
@@ -56,41 +56,29 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
             if (!string.IsNullOrWhiteSpace(ConfigurationStore.GetNameClaimType()))
                 validationParameters.NameClaimType = ConfigurationStore.GetNameClaimType();
 
-            var tokenToValidate = accessToken;
-            if (string.IsNullOrWhiteSpace(tokenToValidate))
-            {
-                // if we're validating the id_token then the audience is based on the client_id, not the issuer/resource like access_token
-                tokenToValidate = idToken;
-                validationParameters.ValidAudience = ConfigurationStore.GetClientId();
-            }
-
             SetIssuerSpecificTokenValidationParameters(validationParameters);
 
             var jwt = new JwtSecurityToken(idToken);
 
             if (hmacAlgorithms.Contains(jwt.Header.Alg))
             {
-                principal = ValidateUsingSharedSecret(validationParameters, tokenToValidate);
+                principal = ValidateUsingSharedSecret(validationParameters, idToken);
             }
             else
             {
-                principal = await ValidateUsingIssuerCertificate(validationParameters, tokenToValidate, issuerConfig);
+                principal = await ValidateUsingIssuerCertificate(validationParameters, idToken, issuerConfig);
             }
 
-            var error = string.Empty;
-            DoIssuerSpecificClaimsValidation(principal, out error);
+            DoIssuerSpecificClaimsValidation(principal, out string error);
 
-            if (string.IsNullOrWhiteSpace(error))
-                return new ClaimsPrincipleContainer(principal, GetProviderGroupIds(principal));
-
-            return new ClaimsPrincipleContainer(error);
+            return string.IsNullOrWhiteSpace(error) ? new ClaimsPrincipalContainer(principal, GetProviderGroupIds(principal)) : new ClaimsPrincipalContainer(error);
         }
 
         ClaimsPrincipal ValidateUsingSharedSecret(TokenValidationParameters validationParameters, string? tokenToValidate)
         {
-            if (ConfigurationStore is IOpenIDConnectWithClientSecretConfigurationStore clientSecretStore)
+            if (ConfigurationStore.HasClientSecret)
             {
-                var clientSecret = clientSecretStore.GetClientSecret();
+                var clientSecret = ConfigurationStore.GetClientSecret();
                 if (clientSecret == null)
                     throw new ArgumentException("Client secret is not configured.");
                 validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(clientSecret.Value));

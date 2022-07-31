@@ -8,7 +8,7 @@ using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 {
-    class AzureADConfigureCommands : OpenIdConnectConfigureCommands<IAzureADConfigurationStore>
+    class AzureADConfigureCommands : OpenIDConnectConfigureCommands<IAzureADConfigurationStore>
     {
         readonly ISystemLog log;
 

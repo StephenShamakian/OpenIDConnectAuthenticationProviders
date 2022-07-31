@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
 {
-    class GoogleAppsConfigurationSettings : OpenIdConnectConfigurationSettings<GoogleAppsConfiguration, GoogleAppsConfigurationResource, IGoogleAppsConfigurationStore>, IGoogleAppsConfigurationSettings
+    class GoogleAppsConfigurationSettings : OpenIDConnectConfigurationSettings<GoogleAppsConfiguration, GoogleAppsConfigurationResource, IGoogleAppsConfigurationStore>, IGoogleAppsConfigurationSettings
     {
         public GoogleAppsConfigurationSettings(IGoogleAppsConfigurationStore configurationDocumentStore) : base(configurationDocumentStore)
         {

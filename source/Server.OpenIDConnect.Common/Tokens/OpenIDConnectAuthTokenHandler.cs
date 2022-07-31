@@ -20,7 +20,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
         {
         }
 
-        public Task<ClaimsPrincipleContainer> GetPrincipalAsync(IDictionary<string, string?> requestForm, out string? stateString)
+        public Task<ClaimsPrincipalContainer> GetPrincipalAsync(IDictionary<string, string?> requestForm, out string? stateString)
         {
             stateString = null;
 
@@ -28,7 +28,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
             {
                 var errorDescription = requestForm["error_description"] ?? string.Empty;
                 Log.Error($"Failed to authenticate user: {errorDescription}");
-                return Task.FromResult(new ClaimsPrincipleContainer(errorDescription));
+                return Task.FromResult(new ClaimsPrincipalContainer(errorDescription));
             }
 
             string? accessToken = null;
@@ -43,7 +43,10 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
                 idToken = requestForm["id_token"];
             }
 
-            stateString = requestForm["state"];
+            if (requestForm.ContainsKey("state"))
+            {
+                stateString = requestForm["state"];
+            }
 
             return GetPrincipalFromToken(accessToken, idToken);
         }

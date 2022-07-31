@@ -61,6 +61,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID
             builder.RegisterType<OctopusIDStaticContentFolders>().As<IContributesStaticContentFolders>().InstancePerDependency();
 
             builder.RegisterType<OctopusIDUserAuthenticationAction>().AsSelf().InstancePerDependency();
+            builder.RegisterType<OctopusIDUserAuthenticatedPkceAction>().AsSelf().InstancePerDependency();
             builder.RegisterType<OctopusIDUserAuthenticatedAction>().AsSelf().InstancePerDependency();
 
             builder.RegisterType<OctopusIDAuthenticationProvider>()

@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Octopus.Data.Model;
 using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration
 {
-    public abstract class OpenIdConnectConfigureCommands<TStore> : IContributeToConfigureCommand
+    public abstract class OpenIDConnectConfigureCommands<TStore> : IContributeToConfigureCommand
         where TStore : IOpenIDConnectConfigurationStore
     {
         protected readonly ISystemLog Log;
         protected readonly Lazy<TStore> ConfigurationStore;
         readonly Lazy<IWebPortalConfigurationStore> webPortalConfigurationStore;
 
-        protected OpenIdConnectConfigureCommands(
+        protected OpenIDConnectConfigureCommands(
             ISystemLog log,
             Lazy<TStore> configurationStore,
             Lazy<IWebPortalConfigurationStore> webPortalConfigurationStore)
@@ -60,6 +61,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Confi
             {
                 ConfigurationStore.Value.SetClientId(v);
                 Log.Info($"{ConfigurationSettingsName} ClientId set to: {v}");
+            }, hide: hide);
+            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}ClientSecret=", $"Follow our documentation to find the Client Secret for {ConfigurationSettingsName}.", v =>
+            {
+                ConfigurationStore.Value.SetClientSecret(v.ToSensitiveString());
+                Log.Info($"{ConfigurationSettingsName} ClientSecret set to: {v}");
             }, hide: hide);
         }
 

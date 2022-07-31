@@ -16,6 +16,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
         {
             Add<AzureADUserAuthenticationAction>("POST", authenticationProvider.AuthenticateUri, RouteCategory.Raw, new AnonymousWhenEnabledEndpointInvocation<IAzureADConfigurationStore>(), null, "OpenIDConnect");
             Add<AzureADUserAuthenticatedAction>("POST", configurationStore.RedirectUri, RouteCategory.Raw, new AnonymousWhenEnabledEndpointInvocation<IAzureADConfigurationStore>(), null, "OpenIDConnect");
+            Add<AzureADUserAuthenticatedPkceAction>("GET", configurationStore.RedirectUri, RouteCategory.Raw, new AnonymousWhenEnabledEndpointInvocation<IAzureADConfigurationStore>(), null, "OpenIDConnect");
         }
     }
 }

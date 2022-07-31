@@ -16,6 +16,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID
         {
             Add<OctopusIDUserAuthenticationAction>("POST", authenticationProvider.AuthenticateUri, RouteCategory.Raw, new AnonymousWhenEnabledEndpointInvocation<IOctopusIDConfigurationStore>(), null, "OpenIDConnect");
             Add<OctopusIDUserAuthenticatedAction>("POST", configurationStore.RedirectUri, RouteCategory.Raw, new AnonymousWhenEnabledEndpointInvocation<IOctopusIDConfigurationStore>(), null, "OpenIDConnect");
+            Add<OctopusIDUserAuthenticatedPkceAction>("GET", configurationStore.RedirectUri, RouteCategory.Raw, new AnonymousWhenEnabledEndpointInvocation<IOctopusIDConfigurationStore>(), null, "OpenIDConnect");
         }
     }
 }
