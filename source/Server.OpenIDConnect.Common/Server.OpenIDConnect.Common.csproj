@@ -13,7 +13,7 @@
     <WarningsAsErrors>true</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
     <PackageReference Include="Octopus.Diagnostics" Version="2.1.2" />
     <PackageReference Include="Octopus.Server.Extensibility" Version="14.3.338" />
     <PackageReference Include="Octopus.Server.Extensibility.Authentication" Version="11.1.126" />
